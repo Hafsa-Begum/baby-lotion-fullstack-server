@@ -20,6 +20,7 @@ async function run() {
         const database = client.db("baby_lotion");
         const productsCollection = database.collection("products");
         const ordersCollection = database.collection("orders");
+        const reviewsCollection = database.collection("reviews");
 
         //get api for all products of explore page
         app.get('/allProducts', async (req, res) => {
@@ -31,12 +32,63 @@ async function run() {
             const result = await productsCollection.find({}).limit(6).toArray();
             res.send(result);
         })
-        //get api for all products of explore page
+        //get api for single products
         app.get('/singleProducts/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await productsCollection.findOne(query);
             res.send(result);
+        })
+        //post api for orders
+        app.post('/addOrders', async (req, res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            res.json(result);
+        })
+        //get api for my orders
+        app.get("/myOrders/:email", async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const result = await ordersCollection.find(query).toArray();
+            res.send(result);
+        });
+        //get api for manage all orders
+        app.get('/manageAllOrders', async (req, res) => {
+            const result = await ordersCollection.find({}).toArray();
+            res.send(result);
+        })
+        //delete api for cancellig my order
+        app.delete('/deleteMyOrder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result);
+        })
+        //delete api for deleting order by admin
+        app.delete('/deleteOrder/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result);
+        })
+        //delete api for deleting product by admin
+        app.delete('/deleteProduct/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            res.send(result);
+        })
+        //get api for all reviews
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewsCollection.find({}).toArray();
+            res.send(result);
+        })
+        //post api for reviews
+        app.post('/reviews', async (req, res) => {
+            console.log(req.body)
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.json(result);
         })
     }
     finally {
