@@ -76,7 +76,6 @@ async function run() {
         })
         //post api for products
         app.post('/addProducts', async (req, res) => {
-            console.log(req.body)
             const product = req.body;
             const result = await productsCollection.insertOne(product);
             res.json(result);
@@ -91,7 +90,6 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
-            console.log(result);
             res.json(result);
         })
         //update api for users
@@ -147,9 +145,17 @@ async function run() {
                 }
             };
             const result = await productsCollection.updateOne(filter, updateDoc, options);
-            console.log(result)
             res.json(result)
         })
+        //update api for order status
+        // app.put('/updateStatus/:id', async (req, res) => {
+        //     const product = req.body;
+        //     const filter = { _id: ObjectId(product._id) };
+        //     console.log(filter)
+        //     const updateDoc = { $set: { status: 'shipped' } };
+        //     const result = await ordersCollection.updateOne(filter, updateDoc);
+        //     res.json(result)
+        // })
 
 
     }
