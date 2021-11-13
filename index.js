@@ -148,14 +148,14 @@ async function run() {
             res.json(result)
         })
         //update api for order status
-        // app.put('/updateStatus/:id', async (req, res) => {
-        //     const product = req.body;
-        //     const filter = { _id: ObjectId(product._id) };
-        //     console.log(filter)
-        //     const updateDoc = { $set: { status: 'shipped' } };
-        //     const result = await ordersCollection.updateOne(filter, updateDoc);
-        //     res.json(result)
-        // })
+        app.put('/updateStatus/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: 'shipped' } };
+            const result = await ordersCollection.updateOne(filter, updateDoc);
+            console.log(result)
+            res.json(result)
+        })
 
 
     }
@@ -166,7 +166,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Hello Baby Lotion!')
+    res.send('Hello Pink Babs!')
 })
 
 app.listen(port, () => {
