@@ -109,6 +109,16 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updateDoc);
             res.json(result)
         })
+        //update api for order status
+        app.put('/updateStatus/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: 'shipped' } };
+            const result = await ordersCollection.updateOne(filter, updateDoc);
+            console.log(result)
+            res.json(result)
+        })
+
         //delete api for cancellig my order
         app.delete('/deleteMyOrder/:id', async (req, res) => {
             const id = req.params.id;
@@ -130,34 +140,26 @@ async function run() {
             const result = await productsCollection.deleteOne(query);
             res.send(result);
         })
+
+
         //update api for product
-        app.put('/updateProduct', async (req, res) => {
-            const product = req.body;
-            const filter = { _id: ObjectId(product._id) };
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: {
-                    name: product.name,
-                    quantity: product.quantity,
-                    price: product.price,
-                    description: product.description,
-                    image: product.image
-                }
-            };
-            const result = await productsCollection.updateOne(filter, updateDoc, options);
-            res.json(result)
-        })
-        //update api for order status
-        app.put('/updateStatus/:id', async (req, res) => {
-            const id = req.params.id;
-            const filter = { _id: ObjectId(id) };
-            const updateDoc = { $set: { status: 'shipped' } };
-            const result = await ordersCollection.updateOne(filter, updateDoc);
-            console.log(result)
-            res.json(result)
-        })
-
-
+        // app.put('/updateProduct/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const product = req.body;
+        //     const filter = { _id: ObjectId(id) };
+        //     // const options = { upsert: true };
+        //     const updateDoc = {
+        //         $set: {
+        //             name: product.name,
+        //             quantity: product.quantity,
+        //             price: product.price,
+        //             description: product.description,
+        //             image: product.image
+        //         }
+        //     };
+        //     const result = await productsCollection.updateOne(filter, updateDoc);
+        //     res.json(result)
+        // })
     }
     finally {
         //await client.close();
